@@ -13,8 +13,8 @@ Dự án bao gồm 2 phần chính:
 
 ```bash
 # Clone repository
-git clone <url-repo-cua-ban>
-cd swinburne
+git clone https://github.com/Khoa-Neee/fraud-detection-system.git
+cd fraud-detection-system
 ```
 
 ---
