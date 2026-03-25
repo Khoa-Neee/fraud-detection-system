@@ -7,7 +7,12 @@ Dự án bao gồm 2 phần chính:
 - **Backend:** Ứng dụng mô hình AI Agents (Planner, Vision, Detective, Report) kết hợp với 4 cơ sở dữ liệu chuyên biệt (Redis, MongoDB, Neo4j, ChromaDB).
 - **Frontend:** Ứng dụng di động mô phỏng Mobile Banking trực quan, xây dựng bằng React Native (Expo).
 
+
 ---
+
+## Lưu ý về file `simulators.py`
+
+File `backend/simulators.py` chỉ dùng cho mục đích giả lập backend (demo offline hoặc phát triển nhanh). Khi demo ứng dụng thực tế trên app, hệ thống sẽ sử dụng các database thật (Redis, MongoDB, Neo4j, ChromaDB) và không cần sử dụng file này. Bạn có thể bỏ qua hoặc xóa file này khi triển khai thực tế.
 
 ## 1. Cài đặt môi trường & Clone Code
 
@@ -93,22 +98,22 @@ npx expo start -c
 ## 4. Hướng dẫn Test Kịch Bản Demo (Demo Scenarios)
 
 Trên ứng dụng điện thoại, tiến hành **Đăng nhập (Sign In)** bằng định danh:
-👉 `C1003668831` *(Huỳnh Vinh Hải - Khách hàng "thanh niên nghiêm túc", User uy tín có Low Risk).*
+👉 `C1003668831` *(Huỳnh Vinh Hải - Khách hàng có lịch sử giao dịch minh bạch, uy tín, thuộc nhóm rủi ro thấp).* 
 
 Nhấn vào **Chuyển tiền trong nước**. Sau đó, trải nghiệm kiểm tra sức mạnh hệ thống với 2 kịch bản chuyển khoản sau:
 
-### Kịch bản 1: Giao dịch có chủ ý đáng ngờ (Khởi động AI chuyên sâu)
-Gửi tiền đến một tài khoản làm cầu nối, thuộc mạng lưới ngầm (từ dấu hiệu bạn cung cấp qua ảnh chụp giấy tờ), nhưng trên hệ thống vẫn đang được giả vờ là "chưa bị lộ trong Blacklist".
-- **Tới (Receiver / To Account ID):** `C1102413633` *(Lê Hải Vinh - Nút thắt mạng lưới ngầm)*
-- **Số tiền (Amount):** `5000` *(Con số cố ý áp sát nhưng nằm dưới mốc $10k để đánh lừa bộ báo cáo chống rửa tiền tiêu chuẩn)*
+### Kịch bản 1: Giao dịch có dấu hiệu bất thường (Kích hoạt kiểm tra chuyên sâu)
+Khách hàng thực hiện chuyển tiền đến một tài khoản có dấu hiệu liên quan đến mạng lưới tài chính ngầm, tuy chưa nằm trong danh sách chặn (Blacklist).
+- **Tới (Receiver / To Account ID):** `C1102413633` *(Lê Hải Vinh - Tài khoản nghi vấn trong hệ thống)*
+- **Số tiền (Amount):** `5000` *(Giao dịch có giá trị lớn, sát ngưỡng cảnh báo nhưng chưa vượt ngưỡng báo động chuẩn AML)*
 - **Nội dung (Description):** `Thanh toan don hang`
 
-**Kết quả kỳ vọng:** Do né được chặn cứng Phase 1 nhờ uy tín 2 bên và số tiền lách luật, hệ thống bắt buộc kích hoạt Phase 2 gọi các AI Agent. Detective Agent sẽ huyênh động GraphDB và Vision nhận diện quan hệ ẩn để kết luận giao dịch này rủi ro cao và đưa ra giải trình chặt chẽ để **Chặn (Block)**.
+**Kết quả kỳ vọng:** Giao dịch vượt qua kiểm tra sơ bộ nhờ uy tín của hai bên và giá trị giao dịch chưa vượt ngưỡng chặn tự động. Tuy nhiên, hệ thống sẽ tự động kích hoạt các AI Agent để phân tích sâu hơn về mối quan hệ, hành vi và lịch sử giao dịch. Nếu phát hiện rủi ro cao, giao dịch sẽ bị **Chặn (Block)** kèm theo giải trình chi tiết.
 
-### Kịch bản 2: Giao dịch sinh hoạt thông thường (Tốc độ cao)
-Khách hàng tiếp tục thao tác chuyển một khoản tiền nhỏ, hợp lý đến một người dùng uy tín khác.
-- **Tới (Receiver / To Account ID):** `C1004838919` *(Bùi Uyên An - Một khách hàng cũng có mức độ uy tín cao)*
-- **Số tiền (Amount):** `10` *(Con số nhỏ, phù hợp chi tiêu mua sắm/ăn uống)*
+### Kịch bản 2: Giao dịch thông thường (Xử lý nhanh)
+Khách hàng thực hiện chuyển khoản với số tiền nhỏ, hợp lý đến một tài khoản uy tín khác.
+- **Tới (Receiver / To Account ID):** `C1004838919` *(Bùi Uyên An - Khách hàng có lịch sử giao dịch tốt, rủi ro thấp)*
+- **Số tiền (Amount):** `10` *(Số tiền nhỏ, phù hợp với chi tiêu cá nhân thông thường)*
 - **Nội dung (Description):** `Tra tien ca phe`
 
-**Kết quả kỳ vọng:** Giao dịch qua ngay bộ lọc Screening tốc độ siêu cao ở Phase 1 bằng Redis, cho ra điểm rủi ro cực thấp và **Duyệt ngay lập tức (Approve)**. Giao dịch diễn ra trơn tru mà không tốn chi phí và thời gian gọi bộ máy AI khổng lồ.
+**Kết quả kỳ vọng:** Giao dịch được hệ thống kiểm tra và phê duyệt ngay lập tức nhờ điểm rủi ro thấp, không cần kích hoạt các phân tích chuyên sâu. Đảm bảo trải nghiệm người dùng mượt mà, không bị gián đoạn.
