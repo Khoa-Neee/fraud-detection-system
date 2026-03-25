@@ -27,7 +27,10 @@ cd fraud-detection-system
 ## 2. Thiết lập Backend (4 Databases & API Keys)
 
 ### 2.1 Cài đặt thư viện Python
-Mở terminal, di chuyển vào thư mục Backend và tạo môi trường ảo:
+
+Mở terminal, di chuyển vào thư mục Backend và tạo môi trường ảo. Bạn có thể chọn sử dụng `venv` hoặc `conda`:
+
+**Tùy chọn 1: Sử dụng venv (Mặc định của Python)**
 ```bash
 cd backend
 python -m venv venv
@@ -35,10 +38,22 @@ python -m venv venv
 # Kích hoạt venv (Windows):
 venv\Scripts\activate
 # Kích hoạt venv (Mac/Linux):
-# source venv/bin/activate
+source venv/bin/activate
 
+# Cài đặt các thư viện cần thiết:
 pip install -r requirements.txt
-```
+
+**Tùy chọn 2: Sử dụng Conda (Khuyên dùng nếu đã cài Anaconda/Miniconda)**
+``` bash
+cd backend
+# Tạo môi trường ảo có tên là 'backend_env' (bạn có thể đổi phiên bản Python nếu cần):
+conda create -n backend_env python=3.10 -y
+
+# Kích hoạt môi trường:
+conda activate backend_env
+
+# Cài đặt các thư viện cần thiết:
+pip install -r requirements.txt
 
 ### 2.2 Đăng ký API Keys & Databases
 Bạn cần tạo tài khoản tự do (Free Tier) tại 4 nền tảng sau và lấy thông tin cấu hình:
