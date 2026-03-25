@@ -42,7 +42,7 @@ source venv/bin/activate
 
 # Cài đặt các thư viện cần thiết:
 pip install -r requirements.txt
-
+```
 **Tùy chọn 2: Sử dụng Conda (Khuyên dùng nếu đã cài Anaconda/Miniconda)**
 ``` bash
 cd backend
@@ -54,7 +54,7 @@ conda activate backend_env
 
 # Cài đặt các thư viện cần thiết:
 pip install -r requirements.txt
-
+```
 ### 2.2 Đăng ký API Keys & Databases
 Bạn cần tạo tài khoản tự do (Free Tier) tại 4 nền tảng sau và lấy thông tin cấu hình:
 1. **Redis Enterprise Cloud**: Lưu trữ dữ liệu screening cực nhanh cho Phase 1.
